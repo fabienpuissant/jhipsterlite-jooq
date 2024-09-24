@@ -28,6 +28,10 @@ npm install
 
 ## Start up
 
+```bash
+docker compose -f src/main/docker/postgresql.yml up -d
+```
+
 
 <!-- jhipster-needle-startupCommand -->
 
@@ -35,5 +39,6 @@ npm install
 
 - [Package types](documentation/package-types.md)
 - [Assertions](documentation/assertions.md)
+- [Postgresql](documentation/postgresql.md)
 
 <!-- jhipster-needle-documentation -->
