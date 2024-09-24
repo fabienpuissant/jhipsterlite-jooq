@@ -51,6 +51,11 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+      <version>${liquibase.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
@@ -78,6 +83,7 @@
     <failsafe-plugin.version>3.5.0</failsafe-plugin.version>
     <spring-boot.version>3.3.4</spring-boot.version>
     <testcontainers.version>1.20.1</testcontainers.version>
+    <liquibase.version>4.29.2</liquibase.version>
   </properties>
 
   <build>

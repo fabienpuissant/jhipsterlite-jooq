@@ -39,3 +39,5 @@ spring:
         query:
           fail_on_pagination_over_collection_fetch: true
           in_clause_parameter_padding: true
+  liquibase:
+    change-log: classpath:config/liquibase/master.xml
