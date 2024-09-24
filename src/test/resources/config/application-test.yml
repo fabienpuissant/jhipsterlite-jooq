@@ -1,0 +1,9 @@
+logging:
+  config: classpath:logback.xml
+  level:
+    com:
+      jooq:
+        app: 'OFF'
+spring:
+  main:
+    banner-mode: 'off'

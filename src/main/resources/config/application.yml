@@ -1,0 +1,8 @@
+logging:
+  level:
+    com:
+      jooq:
+        app: INFO
+spring:
+  application:
+    name: JhipsterSampleApplication
