@@ -6,5 +6,4 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "com.jooq.app" }, enableDefaultTransactions = false)
 class DatabaseConfiguration {}
