@@ -42,12 +42,14 @@
       <artifactId>HikariCP</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.hibernate.orm</groupId>
-      <artifactId>hibernate-core</artifactId>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq</artifactId>
+      <version>${jooq.version}</version>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -74,9 +76,9 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <maven.version>3.6.3</maven.version>
-    
-    
-    
+
+
+
     <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
     <compiler-plugin.version>3.13.0</compiler-plugin.version>
     <surefire-plugin.version>3.5.0</surefire-plugin.version>
@@ -84,6 +86,9 @@
     <spring-boot.version>3.3.4</spring-boot.version>
     <testcontainers.version>1.20.1</testcontainers.version>
     <liquibase.version>4.29.2</liquibase.version>
+    <jooq.version>3.19.12</jooq.version>
+    <testcontainers-jooq-codegen-maven-plugin.version>0.0.4</testcontainers-jooq-codegen-maven-plugin.version>
+    <postgresql.version>42.7.4</postgresql.version>
   </properties>
 
   <build>
@@ -160,6 +165,63 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers-jooq-codegen-maven-plugin</artifactId>
+        <version>${testcontainers-jooq-codegen-maven-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>generate-jooq-sources</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <database>
+                <type>POSTGRES</type>
+                <containerImage>postgres:15-alpine</containerImage>
+              </database>
+              <liquibase>
+                <changeLogPath>master.xml</changeLogPath>
+                <changeLogDirectory>src/main/resources/config/liquibase</changeLogDirectory>
+                <parameters>
+                  <searchPath>src/main/resources/config/liquibase/changelog</searchPath>
+                </parameters>
+                <liquibaseSchemaName>public</liquibaseSchemaName>
+                <defaultSchemaName>public</defaultSchemaName>
+              </liquibase>
+
+              <!-- Generator parameters -->
+              <jooq>
+                <generator>
+                  <database>
+                    <includes>.*</includes>
+                    <excludes>DATABASECHANGELOG</excludes>
+                    <inputSchema>public</inputSchema>
+                  </database>
+                  <target>
+                    <packageName>org.jooq.codegen.maven.example</packageName>
+                    <directory>target/generated-sources/jooq</directory>
+                  </target>
+                </generator>
+              </jooq>
+
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${compiler-plugin.version}</version>
